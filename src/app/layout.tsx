@@ -23,6 +23,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        <meta
+          httpEquiv="Content-Security-Policy"
+          content="default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' https://apis.google.com https://*.firebaseapp.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://*.googleusercontent.com; connect-src 'self' https://*.googleapis.com https://*.firebaseio.com https://*.firebaseapp.com; media-src 'self' https://d8j0ntlcm91z4.cloudfront.net;"
+        />
+      </head>
       <body>
         <AuthProvider>{children}</AuthProvider>
       </body>
