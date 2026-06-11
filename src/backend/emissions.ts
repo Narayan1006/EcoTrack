@@ -2,8 +2,13 @@
 // EcoTrack — CO₂ Emission Calculation Engine
 // ============================================================================
 
-import { ACTIVITY_SUBTYPES } from './constants';
-import type { Activity, ActivityCategory, DailyTotal, CategoryBreakdown } from '@/types';
+import { ACTIVITY_SUBTYPES } from "./constants";
+import type {
+  Activity,
+  ActivityCategory,
+  DailyTotal,
+  CategoryBreakdown,
+} from "@/types";
 
 /**
  * Calculate CO₂ emissions for a given activity subtype and quantity.
@@ -20,7 +25,7 @@ export function calculateEmission(subtypeId: string, value: number): number {
  */
 export function getUnitForSubtype(subtypeId: string): string {
   const subtype = ACTIVITY_SUBTYPES.find((s) => s.id === subtypeId);
-  return subtype?.unit ?? 'unit';
+  return subtype?.unit ?? "unit";
 }
 
 /**
@@ -44,14 +49,16 @@ export function groupActivitiesByDate(activities: Activity[]): DailyTotal[] {
   }
 
   return Array.from(map.values()).sort(
-    (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
+    (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
   );
 }
 
 /**
  * Calculate category breakdown with percentages.
  */
-export function getCategoryBreakdown(activities: Activity[]): CategoryBreakdown[] {
+export function getCategoryBreakdown(
+  activities: Activity[],
+): CategoryBreakdown[] {
   const totals: Record<ActivityCategory, number> = {
     transport: 0,
     food: 0,
@@ -66,26 +73,31 @@ export function getCategoryBreakdown(activities: Activity[]): CategoryBreakdown[
   const grandTotal = Object.values(totals).reduce((s, v) => s + v, 0);
 
   const colors: Record<ActivityCategory, string> = {
-    transport: '#4ECDC4',
-    food: '#FF6B6B',
-    energy: '#FECA57',
-    shopping: '#A29BFE',
+    transport: "#4ECDC4",
+    food: "#FF6B6B",
+    energy: "#FECA57",
+    shopping: "#A29BFE",
   };
 
   return (Object.entries(totals) as [ActivityCategory, number][]).map(
     ([category, total]) => ({
       category,
       total: Math.round(total * 100) / 100,
-      percentage: grandTotal > 0 ? Math.round((total / grandTotal) * 1000) / 10 : 0,
+      percentage:
+        grandTotal > 0 ? Math.round((total / grandTotal) * 1000) / 10 : 0,
       color: colors[category],
-    })
+    }),
   );
 }
 
 /**
  * Get total CO₂ for a date range.
  */
-export function getTotalCo2(activities: Activity[], startDate?: string, endDate?: string): number {
+export function getTotalCo2(
+  activities: Activity[],
+  startDate?: string,
+  endDate?: string,
+): number {
   let filtered = activities;
   if (startDate) {
     filtered = filtered.filter((a) => a.date >= startDate);
@@ -93,7 +105,9 @@ export function getTotalCo2(activities: Activity[], startDate?: string, endDate?
   if (endDate) {
     filtered = filtered.filter((a) => a.date <= endDate);
   }
-  return Math.round(filtered.reduce((sum, a) => sum + a.co2Amount, 0) * 100) / 100;
+  return (
+    Math.round(filtered.reduce((sum, a) => sum + a.co2Amount, 0) * 100) / 100
+  );
 }
 
 /**

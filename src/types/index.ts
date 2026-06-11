@@ -2,7 +2,7 @@
 // EcoTrack — Type Definitions
 // ============================================================================
 
-export type ActivityCategory = 'transport' | 'food' | 'energy' | 'shopping';
+export type ActivityCategory = "transport" | "food" | "energy" | "shopping";
 
 export interface ActivitySubtype {
   id: string;
@@ -67,8 +67,8 @@ export interface EcoAction {
   title: string;
   description: string;
   category: ActivityCategory;
-  impact: 'low' | 'medium' | 'high';
-  difficulty: 'easy' | 'medium' | 'hard';
+  impact: "low" | "medium" | "high";
+  difficulty: "easy" | "medium" | "hard";
   co2Savings: number; // kg CO₂ saved per year
   isCompleted: boolean;
   icon: string;
@@ -76,7 +76,7 @@ export interface EcoAction {
 
 export interface ChatMessage {
   id: string;
-  role: 'user' | 'assistant';
+  role: "user" | "assistant";
   content: string;
   timestamp: string;
 }

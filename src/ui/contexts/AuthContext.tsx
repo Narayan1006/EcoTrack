@@ -1,13 +1,13 @@
-'use client';
+"use client";
 
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from "react";
 import {
   signInWithGoogle,
   signOutUser,
   subscribeToAuthState,
   isFirebaseConfigured,
   type User,
-} from '@/backend/firebase';
+} from "@/backend/firebase";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -21,7 +21,7 @@ interface AuthUser {
 interface AuthContextValue {
   user: AuthUser | null;
   loading: boolean;
-  isDemo: boolean;           // true when Firebase is not configured
+  isDemo: boolean; // true when Firebase is not configured
   signIn: () => Promise<void>;
   signOut: () => Promise<void>;
 }
@@ -72,7 +72,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       await signInWithGoogle();
     } catch (err) {
-      console.error('Sign-in error:', err);
+      console.error("Sign-in error:", err);
     }
   };
 
@@ -81,7 +81,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       await signOutUser();
       setUser(null);
     } catch (err) {
-      console.error('Sign-out error:', err);
+      console.error("Sign-out error:", err);
     }
   };
 

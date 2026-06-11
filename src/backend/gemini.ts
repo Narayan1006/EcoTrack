@@ -4,13 +4,13 @@
 // Falls back to mock responses when API key is missing or on error
 // ============================================================================
 
-import { getMockAssistantResponse } from './mock-data';
+import { getMockAssistantResponse } from "./mock-data";
 
 // Works in both server (GEMINI_API_KEY) and client/static (NEXT_PUBLIC_GEMINI_API_KEY)
 const getApiKey = () =>
-  (typeof process !== 'undefined' && process.env?.GEMINI_API_KEY) ||
-  (typeof process !== 'undefined' && process.env?.NEXT_PUBLIC_GEMINI_API_KEY) ||
-  '';
+  (typeof process !== "undefined" && process.env?.GEMINI_API_KEY) ||
+  (typeof process !== "undefined" && process.env?.NEXT_PUBLIC_GEMINI_API_KEY) ||
+  "";
 
 const SYSTEM_PROMPT = `You are EcoTrack AI Assistant, a friendly and knowledgeable carbon footprint advisor. Your role is to:
 
@@ -36,7 +36,7 @@ User's context: They are tracking their daily carbon footprint across transport,
  */
 export async function getGeminiResponse(
   userMessage: string,
-  conversationHistory: { role: string; content: string }[] = []
+  conversationHistory: { role: string; content: string }[] = [],
 ): Promise<string> {
   const GEMINI_API_KEY = getApiKey();
 
@@ -47,12 +47,12 @@ export async function getGeminiResponse(
   }
 
   try {
-    const { GoogleGenAI } = await import('@google/genai');
+    const { GoogleGenAI } = await import("@google/genai");
     const ai = new GoogleGenAI({ apiKey: GEMINI_API_KEY });
 
     // Build chat history in new SDK format
     const history = conversationHistory.slice(0, -1).map((msg) => ({
-      role: msg.role === 'assistant' ? 'model' : 'user',
+      role: msg.role === "assistant" ? "model" : "user",
       parts: [{ text: msg.content }],
     }));
 
@@ -68,12 +68,13 @@ export async function getGeminiResponse(
     };
 
     try {
-      return await tryModel('gemini-2.0-flash-lite');
+      return await tryModel("gemini-2.0-flash-lite");
     } catch (rateErr: unknown) {
-      const isRateLimit = rateErr instanceof Error && rateErr.message.includes('429');
+      const isRateLimit =
+        rateErr instanceof Error && rateErr.message.includes("429");
       if (isRateLimit) {
         try {
-          return await tryModel('gemini-1.5-flash');
+          return await tryModel("gemini-1.5-flash");
         } catch {
           throw rateErr;
         }
@@ -81,7 +82,7 @@ export async function getGeminiResponse(
       throw rateErr;
     }
   } catch (error) {
-    console.error('Gemini API error:', error);
+    console.error("Gemini API error:", error);
     return getMockAssistantResponse(userMessage);
   }
 }

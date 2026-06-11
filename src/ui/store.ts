@@ -4,31 +4,31 @@
 // and can be swapped to Firebase when configured
 // ============================================================================
 
-'use client';
+"use client";
 
-import { Activity, Goal, Badge, EcoAction } from '@/types';
-import { ECO_ACTIONS } from '@/backend/constants';
+import { Activity, Goal, Badge, EcoAction } from "@/types";
+import { ECO_ACTIONS } from "@/backend/constants";
 import {
   generateMockActivities,
   generateMockGoals,
   generateMockBadges,
-} from '@/backend/mock-data';
-import { calculateEmission, getUnitForSubtype } from '@/backend/emissions';
-import { v4 as uuid } from 'uuid';
+} from "@/backend/mock-data";
+import { calculateEmission, getUnitForSubtype } from "@/backend/emissions";
+import { v4 as uuid } from "uuid";
 
 const STORAGE_KEYS = {
-  activities: 'ecotrack_activities',
-  goals: 'ecotrack_goals',
-  badges: 'ecotrack_badges',
-  ecoActions: 'ecotrack_eco_actions',
-  initialized: 'ecotrack_initialized',
+  activities: "ecotrack_activities",
+  goals: "ecotrack_goals",
+  badges: "ecotrack_badges",
+  ecoActions: "ecotrack_eco_actions",
+  initialized: "ecotrack_initialized",
 } as const;
 
 // ---------------------------------------------------------------------------
 // Helpers
 // ---------------------------------------------------------------------------
 function loadFromStorage<T>(key: string, fallback: T): T {
-  if (typeof window === 'undefined') return fallback;
+  if (typeof window === "undefined") return fallback;
   try {
     const data = localStorage.getItem(key);
     return data ? JSON.parse(data) : fallback;
@@ -38,11 +38,11 @@ function loadFromStorage<T>(key: string, fallback: T): T {
 }
 
 function saveToStorage<T>(key: string, data: T): void {
-  if (typeof window === 'undefined') return;
+  if (typeof window === "undefined") return;
   try {
     localStorage.setItem(key, JSON.stringify(data));
   } catch {
-    console.warn('Failed to save to localStorage');
+    console.warn("Failed to save to localStorage");
   }
 }
 
@@ -50,7 +50,7 @@ function saveToStorage<T>(key: string, data: T): void {
  * Initialize the store with mock data if running for the first time.
  */
 export function initializeStore(): void {
-  if (typeof window === 'undefined') return;
+  if (typeof window === "undefined") return;
   const initialized = localStorage.getItem(STORAGE_KEYS.initialized);
   if (initialized) return;
 
@@ -58,7 +58,7 @@ export function initializeStore(): void {
   saveToStorage(STORAGE_KEYS.goals, generateMockGoals());
   saveToStorage(STORAGE_KEYS.badges, generateMockBadges());
   saveToStorage(STORAGE_KEYS.ecoActions, ECO_ACTIONS);
-  localStorage.setItem(STORAGE_KEYS.initialized, 'true');
+  localStorage.setItem(STORAGE_KEYS.initialized, "true");
 }
 
 // ---------------------------------------------------------------------------
@@ -69,7 +69,7 @@ export function getActivities(): Activity[] {
 }
 
 export function addActivity(input: {
-  category: Activity['category'];
+  category: Activity["category"];
   subtypeId: string;
   value: number;
   date: string;
@@ -104,7 +104,11 @@ export function getGoals(): Goal[] {
   return loadFromStorage<Goal[]>(STORAGE_KEYS.goals, []);
 }
 
-export function addGoal(input: { title: string; targetCo2: number; month: string }): Goal {
+export function addGoal(input: {
+  title: string;
+  targetCo2: number;
+  month: string;
+}): Goal {
   const goals = getGoals();
   const newGoal: Goal = {
     id: uuid(),

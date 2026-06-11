@@ -3,9 +3,9 @@
 // Provides realistic sample data when Firebase is not configured
 // ============================================================================
 
-import { Activity, Goal, Badge, ChatMessage } from '@/types';
-import { BADGES } from './constants';
-import { v4 as uuid } from 'uuid';
+import { Activity, Goal, Badge, ChatMessage } from "@/types";
+import { BADGES } from "./constants";
+import { v4 as uuid } from "uuid";
 
 /**
  * Generate dates for the last N days in YYYY-MM-DD format.
@@ -29,19 +29,97 @@ export function generateMockActivities(): Activity[] {
   const activities: Activity[] = [];
 
   const templates = [
-    { subtypeId: 'car-petrol', category: 'transport' as const, value: 15, co2Amount: 3.15, unit: 'km' },
-    { subtypeId: 'bus', category: 'transport' as const, value: 20, co2Amount: 1.78, unit: 'km' },
-    { subtypeId: 'train', category: 'transport' as const, value: 40, co2Amount: 1.64, unit: 'km' },
-    { subtypeId: 'motorcycle', category: 'transport' as const, value: 12, co2Amount: 1.24, unit: 'km' },
-    { subtypeId: 'meat-heavy', category: 'food' as const, value: 1, co2Amount: 3.3, unit: 'meal' },
-    { subtypeId: 'vegetarian', category: 'food' as const, value: 2, co2Amount: 1.4, unit: 'meal' },
-    { subtypeId: 'vegan', category: 'food' as const, value: 1, co2Amount: 0.4, unit: 'meal' },
-    { subtypeId: 'coffee', category: 'food' as const, value: 2, co2Amount: 0.42, unit: 'cup' },
-    { subtypeId: 'electricity', category: 'energy' as const, value: 8, co2Amount: 6.56, unit: 'kWh' },
-    { subtypeId: 'ac-usage', category: 'energy' as const, value: 3, co2Amount: 4.5, unit: 'hours' },
-    { subtypeId: 'lpg', category: 'energy' as const, value: 0.3, co2Amount: 0.89, unit: 'kg' },
-    { subtypeId: 'online-order', category: 'shopping' as const, value: 1, co2Amount: 3.1, unit: 'package' },
-    { subtypeId: 'groceries', category: 'shopping' as const, value: 3, co2Amount: 1.5, unit: 'bag' },
+    {
+      subtypeId: "car-petrol",
+      category: "transport" as const,
+      value: 15,
+      co2Amount: 3.15,
+      unit: "km",
+    },
+    {
+      subtypeId: "bus",
+      category: "transport" as const,
+      value: 20,
+      co2Amount: 1.78,
+      unit: "km",
+    },
+    {
+      subtypeId: "train",
+      category: "transport" as const,
+      value: 40,
+      co2Amount: 1.64,
+      unit: "km",
+    },
+    {
+      subtypeId: "motorcycle",
+      category: "transport" as const,
+      value: 12,
+      co2Amount: 1.24,
+      unit: "km",
+    },
+    {
+      subtypeId: "meat-heavy",
+      category: "food" as const,
+      value: 1,
+      co2Amount: 3.3,
+      unit: "meal",
+    },
+    {
+      subtypeId: "vegetarian",
+      category: "food" as const,
+      value: 2,
+      co2Amount: 1.4,
+      unit: "meal",
+    },
+    {
+      subtypeId: "vegan",
+      category: "food" as const,
+      value: 1,
+      co2Amount: 0.4,
+      unit: "meal",
+    },
+    {
+      subtypeId: "coffee",
+      category: "food" as const,
+      value: 2,
+      co2Amount: 0.42,
+      unit: "cup",
+    },
+    {
+      subtypeId: "electricity",
+      category: "energy" as const,
+      value: 8,
+      co2Amount: 6.56,
+      unit: "kWh",
+    },
+    {
+      subtypeId: "ac-usage",
+      category: "energy" as const,
+      value: 3,
+      co2Amount: 4.5,
+      unit: "hours",
+    },
+    {
+      subtypeId: "lpg",
+      category: "energy" as const,
+      value: 0.3,
+      co2Amount: 0.89,
+      unit: "kg",
+    },
+    {
+      subtypeId: "online-order",
+      category: "shopping" as const,
+      value: 1,
+      co2Amount: 3.1,
+      unit: "package",
+    },
+    {
+      subtypeId: "groceries",
+      category: "shopping" as const,
+      value: 3,
+      co2Amount: 1.5,
+      unit: "bag",
+    },
   ];
 
   for (const date of dates) {
@@ -71,14 +149,14 @@ export function generateMockActivities(): Activity[] {
  */
 export function generateMockGoals(): Goal[] {
   const now = new Date();
-  const currentMonth = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+  const currentMonth = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
   const lastMonth = new Date(now.getFullYear(), now.getMonth() - 1);
-  const lastMonthStr = `${lastMonth.getFullYear()}-${String(lastMonth.getMonth() + 1).padStart(2, '0')}`;
+  const lastMonthStr = `${lastMonth.getFullYear()}-${String(lastMonth.getMonth() + 1).padStart(2, "0")}`;
 
   return [
     {
       id: uuid(),
-      title: 'Reduce Monthly Carbon Footprint',
+      title: "Reduce Monthly Carbon Footprint",
       targetCo2: 200,
       currentCo2: 156.8,
       month: currentMonth,
@@ -87,7 +165,7 @@ export function generateMockGoals(): Goal[] {
     },
     {
       id: uuid(),
-      title: 'Green Commute Month',
+      title: "Green Commute Month",
       targetCo2: 50,
       currentCo2: 32.4,
       month: currentMonth,
@@ -96,7 +174,7 @@ export function generateMockGoals(): Goal[] {
     },
     {
       id: uuid(),
-      title: 'Last Month Challenge',
+      title: "Last Month Challenge",
       targetCo2: 250,
       currentCo2: 220.3,
       month: lastMonthStr,
@@ -113,7 +191,10 @@ export function generateMockBadges(): Badge[] {
   return BADGES.map((badge, i) => ({
     ...badge,
     isUnlocked: i < 4, // First 4 unlocked
-    unlockedAt: i < 4 ? new Date(Date.now() - (4 - i) * 86400000 * 7).toISOString() : undefined,
+    unlockedAt:
+      i < 4
+        ? new Date(Date.now() - (4 - i) * 86400000 * 7).toISOString()
+        : undefined,
   }));
 }
 
@@ -134,19 +215,38 @@ let mockResponseIndex = 0;
 export function getMockAssistantResponse(userMessage: string): string {
   // Simple keyword-based response selection
   const msg = userMessage.toLowerCase();
-  if (msg.includes('transport') || msg.includes('car') || msg.includes('drive') || msg.includes('commute')) {
+  if (
+    msg.includes("transport") ||
+    msg.includes("car") ||
+    msg.includes("drive") ||
+    msg.includes("commute")
+  ) {
     return MOCK_RESPONSES[0];
   }
-  if (msg.includes('food') || msg.includes('eat') || msg.includes('diet') || msg.includes('meal')) {
+  if (
+    msg.includes("food") ||
+    msg.includes("eat") ||
+    msg.includes("diet") ||
+    msg.includes("meal")
+  ) {
     return MOCK_RESPONSES[1];
   }
-  if (msg.includes('energy') || msg.includes('electricity') || msg.includes('ac') || msg.includes('power')) {
+  if (
+    msg.includes("energy") ||
+    msg.includes("electricity") ||
+    msg.includes("ac") ||
+    msg.includes("power")
+  ) {
     return MOCK_RESPONSES[2];
   }
-  if (msg.includes('shop') || msg.includes('buy') || msg.includes('purchase')) {
+  if (msg.includes("shop") || msg.includes("buy") || msg.includes("purchase")) {
     return MOCK_RESPONSES[3];
   }
-  if (msg.includes('progress') || msg.includes('how am i') || msg.includes('score')) {
+  if (
+    msg.includes("progress") ||
+    msg.includes("how am i") ||
+    msg.includes("score")
+  ) {
     return MOCK_RESPONSES[4];
   }
   // Cycle through responses for generic questions
@@ -161,8 +261,9 @@ export function getMockAssistantResponse(userMessage: string): string {
 export function getWelcomeMessage(): ChatMessage {
   return {
     id: uuid(),
-    role: 'assistant',
-    content: "👋 Hi! I'm your EcoTrack AI Assistant, powered by Google Gemini. I can help you understand your carbon footprint, suggest personalized ways to reduce it, and answer questions about sustainable living. What would you like to know?",
+    role: "assistant",
+    content:
+      "👋 Hi! I'm your EcoTrack AI Assistant, powered by Google Gemini. I can help you understand your carbon footprint, suggest personalized ways to reduce it, and answer questions about sustainable living. What would you like to know?",
     timestamp: new Date().toISOString(),
   };
 }
