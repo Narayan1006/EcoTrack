@@ -88,26 +88,53 @@ NEXT_PUBLIC_FIREBASE_APP_ID=...
 
 ## 📐 Architecture
 
+The codebase is divided into three clear layers for separation of concerns and testability:
+
 ```
 src/
-├── app/                    # Next.js App Router pages
-│   ├── page.tsx            # Dashboard
-│   ├── log/page.tsx        # Activity Logger
-│   ├── analytics/page.tsx  # Analytics & Insights
-│   ├── assistant/page.tsx  # AI Assistant (Gemini)
-│   ├── goals/page.tsx      # Goals & Achievements
-│   ├── actions/page.tsx    # Eco Actions Library
-│   └── api/assistant/      # Gemini API route
-├── lib/
-│   ├── constants.ts        # Emission factors (EPA/DEFRA/IPCC)
-│   ├── emissions.ts        # CO₂ calculation engine
-│   ├── store.ts            # localStorage data store
-│   ├── gemini.ts           # Gemini AI client
-│   ├── firebase.ts         # Firebase client
-│   ├── validators.ts       # Zod schemas
-│   └── mock-data.ts        # Demo mode data
-└── types/index.ts          # TypeScript definitions
+│
+├── backend/                      # Pure business logic — zero React dependencies
+│   ├── constants.ts              # CO₂ emission factors (DEFRA / EPA / IPCC AR6)
+│   ├── emissions.ts              # CO₂ calculation engine
+│   ├── firebase.ts               # Firebase SDK initialisation
+│   ├── gemini.ts                 # Google Gemini AI client (with fallback)
+│   ├── mock-data.ts              # Demo data generators
+│   └── validators.ts             # Zod input validation schemas
+│
+├── ui/                           # React / client-side code only
+│   ├── store.ts                  # localStorage state manager (CRUD)
+│   └── components/
+│       ├── StoreInitializer.tsx  # Hydrates store on first mount
+│       └── layout/
+│           └── Sidebar.tsx       # Navigation sidebar
+│
+├── app/                          # Next.js App Router — thin routing layer
+│   ├── globals.css               # Design system (CSS variables, typography)
+│   ├── layout.tsx                # Root layout (fonts, metadata, SEO)
+│   ├── (landing)/                # Public landing page (no sidebar)
+│   │   └── page.tsx              # Cinematic hero section
+│   └── (app)/                    # Inner app (sidebar layout)
+│       ├── layout.tsx            # Wraps pages with Sidebar + StoreInitializer
+│       ├── dashboard/page.tsx    # Carbon score gauge, charts, recent activity
+│       ├── log/page.tsx          # Activity logger (30+ activity types)
+│       ├── analytics/page.tsx    # Stacked charts, period filters, comparisons
+│       ├── assistant/page.tsx    # Gemini AI chat interface
+│       ├── goals/page.tsx        # Monthly goal setting + achievement badges
+│       ├── actions/page.tsx      # Eco actions library with CO₂ savings
+│       └── api/assistant/
+│           └── route.ts          # Server-side Gemini API handler
+│
+└── types/
+    └── index.ts                  # Shared TypeScript interfaces & types
 ```
+
+### Layer Responsibilities
+
+| Layer | Purpose | Can import from |
+|---|---|---|
+| `backend/` | Pure functions, AI, DB, calculations | `types/` only |
+| `ui/` | React components, client state | `backend/`, `types/` |
+| `app/` | Next.js pages & routes | `backend/`, `ui/`, `types/` |
 
 ---
 
