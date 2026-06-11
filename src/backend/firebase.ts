@@ -5,7 +5,14 @@
 // ============================================================================
 
 import { initializeApp, getApps, FirebaseApp } from 'firebase/app';
-import { getAuth, Auth } from 'firebase/auth';
+import {
+  getAuth, Auth,
+  GoogleAuthProvider,
+  signInWithPopup,
+  signOut as firebaseSignOut,
+  onAuthStateChanged,
+  User,
+} from 'firebase/auth';
 import { getFirestore, Firestore } from 'firebase/firestore';
 
 let app: FirebaseApp | null = null;
@@ -68,3 +75,39 @@ export function getFirestoreDb(): Firestore | null {
   if (!db) db = getFirestore(firebaseApp);
   return db;
 }
+
+/**
+ * Sign in with Google popup. Returns the signed-in User.
+ */
+export async function signInWithGoogle(): Promise<User | null> {
+  const authInstance = getFirebaseAuth();
+  if (!authInstance) return null;
+  const provider = new GoogleAuthProvider();
+  provider.setCustomParameters({ prompt: 'select_account' });
+  const result = await signInWithPopup(authInstance, provider);
+  return result.user;
+}
+
+/**
+ * Sign out the current user.
+ */
+export async function signOutUser(): Promise<void> {
+  const authInstance = getFirebaseAuth();
+  if (!authInstance) return;
+  await firebaseSignOut(authInstance);
+}
+
+/**
+ * Subscribe to auth state changes. Returns unsubscribe function.
+ */
+export function subscribeToAuthState(callback: (user: User | null) => void): () => void {
+  const authInstance = getFirebaseAuth();
+  if (!authInstance) {
+    callback(null);
+    return () => {};
+  }
+  return onAuthStateChanged(authInstance, callback);
+}
+
+// Re-export User type for convenience
+export type { User };

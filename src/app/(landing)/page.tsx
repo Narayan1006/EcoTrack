@@ -175,7 +175,7 @@ export default function LandingPage() {
 
           {/* CTA */}
           <Link
-            href="/dashboard"
+            href="/login"
             className="hidden md:inline-flex items-center justify-center"
             style={{
               fontSize: '0.875rem',
@@ -255,7 +255,7 @@ export default function LandingPage() {
           style={{ display: 'flex', gap: '1rem', marginTop: '3rem', flexWrap: 'wrap', justifyContent: 'center' }}
         >
           <Link
-            href="/dashboard"
+            href="/login"
             style={{
               fontFamily: "'Inter', sans-serif",
               fontSize: '1rem',
@@ -275,7 +275,7 @@ export default function LandingPage() {
           </Link>
 
           <Link
-            href="/assistant"
+            href="/login"
             style={{
               fontFamily: "'Inter', sans-serif",
               fontSize: '1rem',
