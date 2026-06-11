@@ -1,0 +1,126 @@
+// ============================================================================
+// EcoTrack — Constants & Emission Factors
+// Scientific CO₂ emission factors sourced from EPA, DEFRA, and IPCC data
+// ============================================================================
+
+import { ActivitySubtype, Badge, EcoAction } from '@/types';
+
+// ---------------------------------------------------------------------------
+// Category metadata
+// ---------------------------------------------------------------------------
+export const CATEGORY_CONFIG = {
+  transport: {
+    label: 'Transport',
+    icon: '🚗',
+    color: '#4ECDC4',
+    gradient: 'linear-gradient(135deg, #4ECDC4, #44B09E)',
+  },
+  food: {
+    label: 'Food',
+    icon: '🍽️',
+    color: '#FF6B6B',
+    gradient: 'linear-gradient(135deg, #FF6B6B, #EE5A24)',
+  },
+  energy: {
+    label: 'Energy',
+    icon: '⚡',
+    color: '#FECA57',
+    gradient: 'linear-gradient(135deg, #FECA57, #F39C12)',
+  },
+  shopping: {
+    label: 'Shopping',
+    icon: '🛒',
+    color: '#A29BFE',
+    gradient: 'linear-gradient(135deg, #A29BFE, #6C5CE7)',
+  },
+} as const;
+
+// ---------------------------------------------------------------------------
+// Activity subtypes with emission factors (kg CO₂ per unit)
+// ---------------------------------------------------------------------------
+export const ACTIVITY_SUBTYPES: ActivitySubtype[] = [
+  // Transport (kg CO₂ per km)
+  { id: 'car-petrol', label: 'Car (Petrol)', category: 'transport', icon: '🚗', unit: 'km', emissionFactor: 0.21, defaultValue: 10 },
+  { id: 'car-diesel', label: 'Car (Diesel)', category: 'transport', icon: '🚙', unit: 'km', emissionFactor: 0.17, defaultValue: 10 },
+  { id: 'car-electric', label: 'Car (Electric)', category: 'transport', icon: '⚡', unit: 'km', emissionFactor: 0.05, defaultValue: 10 },
+  { id: 'bus', label: 'Bus', category: 'transport', icon: '🚌', unit: 'km', emissionFactor: 0.089, defaultValue: 15 },
+  { id: 'train', label: 'Train', category: 'transport', icon: '🚆', unit: 'km', emissionFactor: 0.041, defaultValue: 30 },
+  { id: 'metro', label: 'Metro/Subway', category: 'transport', icon: '🚇', unit: 'km', emissionFactor: 0.033, defaultValue: 10 },
+  { id: 'flight-domestic', label: 'Domestic Flight', category: 'transport', icon: '✈️', unit: 'km', emissionFactor: 0.255, defaultValue: 500 },
+  { id: 'flight-intl', label: 'International Flight', category: 'transport', icon: '🛫', unit: 'km', emissionFactor: 0.195, defaultValue: 2000 },
+  { id: 'bike', label: 'Bicycle', category: 'transport', icon: '🚲', unit: 'km', emissionFactor: 0, defaultValue: 5 },
+  { id: 'walk', label: 'Walking', category: 'transport', icon: '🚶', unit: 'km', emissionFactor: 0, defaultValue: 2 },
+  { id: 'auto-rickshaw', label: 'Auto Rickshaw', category: 'transport', icon: '🛺', unit: 'km', emissionFactor: 0.12, defaultValue: 5 },
+  { id: 'motorcycle', label: 'Motorcycle', category: 'transport', icon: '🏍️', unit: 'km', emissionFactor: 0.103, defaultValue: 15 },
+
+  // Food (kg CO₂ per meal)
+  { id: 'meat-heavy', label: 'Meat-Heavy Meal', category: 'food', icon: '🥩', unit: 'meal', emissionFactor: 3.3, defaultValue: 1 },
+  { id: 'meat-moderate', label: 'Moderate Meat Meal', category: 'food', icon: '🍗', unit: 'meal', emissionFactor: 1.7, defaultValue: 1 },
+  { id: 'vegetarian', label: 'Vegetarian Meal', category: 'food', icon: '🥗', unit: 'meal', emissionFactor: 0.7, defaultValue: 1 },
+  { id: 'vegan', label: 'Vegan Meal', category: 'food', icon: '🥬', unit: 'meal', emissionFactor: 0.4, defaultValue: 1 },
+  { id: 'dairy', label: 'Dairy Products', category: 'food', icon: '🧀', unit: 'serving', emissionFactor: 0.8, defaultValue: 1 },
+  { id: 'food-waste', label: 'Food Waste', category: 'food', icon: '🗑️', unit: 'kg', emissionFactor: 2.5, defaultValue: 0.5 },
+  { id: 'coffee', label: 'Coffee', category: 'food', icon: '☕', unit: 'cup', emissionFactor: 0.21, defaultValue: 2 },
+
+  // Energy (kg CO₂ per kWh or unit)
+  { id: 'electricity', label: 'Electricity', category: 'energy', icon: '💡', unit: 'kWh', emissionFactor: 0.82, defaultValue: 5 },
+  { id: 'natural-gas', label: 'Natural Gas', category: 'energy', icon: '🔥', unit: 'kWh', emissionFactor: 0.18, defaultValue: 10 },
+  { id: 'lpg', label: 'LPG Cooking', category: 'energy', icon: '🍳', unit: 'kg', emissionFactor: 2.98, defaultValue: 0.5 },
+  { id: 'ac-usage', label: 'Air Conditioning', category: 'energy', icon: '❄️', unit: 'hours', emissionFactor: 1.5, defaultValue: 4 },
+  { id: 'heating', label: 'Room Heating', category: 'energy', icon: '🌡️', unit: 'hours', emissionFactor: 1.2, defaultValue: 3 },
+  { id: 'laundry', label: 'Laundry (Machine)', category: 'energy', icon: '👕', unit: 'load', emissionFactor: 0.6, defaultValue: 1 },
+
+  // Shopping (kg CO₂ per item/unit)
+  { id: 'clothing', label: 'New Clothing', category: 'shopping', icon: '👔', unit: 'item', emissionFactor: 10, defaultValue: 1 },
+  { id: 'electronics', label: 'Electronics', category: 'shopping', icon: '📱', unit: 'item', emissionFactor: 50, defaultValue: 1 },
+  { id: 'furniture', label: 'Furniture', category: 'shopping', icon: '🪑', unit: 'item', emissionFactor: 30, defaultValue: 1 },
+  { id: 'groceries', label: 'Grocery Bags', category: 'shopping', icon: '🛍️', unit: 'bag', emissionFactor: 0.5, defaultValue: 2 },
+  { id: 'online-order', label: 'Online Order', category: 'shopping', icon: '📦', unit: 'package', emissionFactor: 3.1, defaultValue: 1 },
+];
+
+// ---------------------------------------------------------------------------
+// Achievement badges
+// ---------------------------------------------------------------------------
+export const BADGES: Badge[] = [
+  { id: 'first-log', title: 'First Step', description: 'Log your first activity', icon: '🌱', isUnlocked: false, requirement: '1 activity logged' },
+  { id: 'week-streak', title: 'Week Warrior', description: '7-day logging streak', icon: '🔥', isUnlocked: false, requirement: '7-day streak' },
+  { id: 'month-streak', title: 'Monthly Master', description: '30-day logging streak', icon: '⭐', isUnlocked: false, requirement: '30-day streak' },
+  { id: 'green-commuter', title: 'Green Commuter', description: 'Use zero-emission transport 10 times', icon: '🚲', isUnlocked: false, requirement: '10 zero-emission trips' },
+  { id: 'veggie-lover', title: 'Veggie Champion', description: 'Log 20 vegetarian/vegan meals', icon: '🥗', isUnlocked: false, requirement: '20 plant-based meals' },
+  { id: 'energy-saver', title: 'Energy Saver', description: 'Reduce energy usage by 20%', icon: '💡', isUnlocked: false, requirement: '20% energy reduction' },
+  { id: 'eco-warrior', title: 'Eco Warrior', description: 'Complete 10 eco actions', icon: '🌍', isUnlocked: false, requirement: '10 eco actions done' },
+  { id: 'carbon-cutter', title: 'Carbon Cutter', description: 'Stay under 5 kg CO₂ for a day', icon: '✂️', isUnlocked: false, requirement: '< 5 kg CO₂ in a day' },
+  { id: 'goal-crusher', title: 'Goal Crusher', description: 'Achieve your monthly goal', icon: '🏆', isUnlocked: false, requirement: 'Monthly goal met' },
+  { id: 'century', title: 'Century Club', description: 'Log 100 activities', icon: '💯', isUnlocked: false, requirement: '100 activities logged' },
+];
+
+// ---------------------------------------------------------------------------
+// Eco Actions Library
+// ---------------------------------------------------------------------------
+export const ECO_ACTIONS: EcoAction[] = [
+  { id: 'ea-1', title: 'Switch to LED Bulbs', description: 'Replace incandescent bulbs with LEDs to cut lighting energy by 80%.', category: 'energy', impact: 'medium', difficulty: 'easy', co2Savings: 40, isCompleted: false, icon: '💡' },
+  { id: 'ea-2', title: 'Carpool to Work', description: 'Share rides with colleagues to halve your commute emissions.', category: 'transport', impact: 'high', difficulty: 'medium', co2Savings: 500, isCompleted: false, icon: '🚗' },
+  { id: 'ea-3', title: 'Meatless Mondays', description: 'Skip meat one day a week to reduce food-related emissions.', category: 'food', impact: 'medium', difficulty: 'easy', co2Savings: 170, isCompleted: false, icon: '🥦' },
+  { id: 'ea-4', title: 'Reusable Shopping Bags', description: 'Ditch single-use plastic bags for reusable alternatives.', category: 'shopping', impact: 'low', difficulty: 'easy', co2Savings: 12, isCompleted: false, icon: '🛍️' },
+  { id: 'ea-5', title: 'Unplug Idle Devices', description: 'Eliminate phantom energy drain from standby electronics.', category: 'energy', impact: 'low', difficulty: 'easy', co2Savings: 50, isCompleted: false, icon: '🔌' },
+  { id: 'ea-6', title: 'Use Public Transit', description: 'Switch from car to bus/train for daily commute.', category: 'transport', impact: 'high', difficulty: 'medium', co2Savings: 800, isCompleted: false, icon: '🚆' },
+  { id: 'ea-7', title: 'Composting', description: 'Compost food scraps to reduce methane from landfills.', category: 'food', impact: 'medium', difficulty: 'medium', co2Savings: 100, isCompleted: false, icon: '🌿' },
+  { id: 'ea-8', title: 'Cold Water Laundry', description: 'Wash clothes in cold water to save heating energy.', category: 'energy', impact: 'low', difficulty: 'easy', co2Savings: 60, isCompleted: false, icon: '🧊' },
+  { id: 'ea-9', title: 'Buy Second-Hand', description: 'Purchase pre-owned clothing and electronics.', category: 'shopping', impact: 'high', difficulty: 'easy', co2Savings: 300, isCompleted: false, icon: '♻️' },
+  { id: 'ea-10', title: 'Cycle Short Trips', description: 'Bike for trips under 5 km instead of driving.', category: 'transport', impact: 'medium', difficulty: 'medium', co2Savings: 200, isCompleted: false, icon: '🚴' },
+  { id: 'ea-11', title: 'Plant-Based Diet', description: 'Transition to a predominantly plant-based diet.', category: 'food', impact: 'high', difficulty: 'hard', co2Savings: 900, isCompleted: false, icon: '🌱' },
+  { id: 'ea-12', title: 'Solar Panels', description: 'Install solar panels to generate clean electricity.', category: 'energy', impact: 'high', difficulty: 'hard', co2Savings: 1500, isCompleted: false, icon: '☀️' },
+  { id: 'ea-13', title: 'Reduce AC Usage', description: 'Set AC to 24°C and use fans to supplement cooling.', category: 'energy', impact: 'medium', difficulty: 'easy', co2Savings: 200, isCompleted: false, icon: '🌬️' },
+  { id: 'ea-14', title: 'Minimal Packaging', description: 'Choose products with minimal or recyclable packaging.', category: 'shopping', impact: 'low', difficulty: 'easy', co2Savings: 30, isCompleted: false, icon: '📦' },
+  { id: 'ea-15', title: 'Work from Home', description: 'Remote work 2 days/week to eliminate commute emissions.', category: 'transport', impact: 'high', difficulty: 'medium', co2Savings: 400, isCompleted: false, icon: '🏠' },
+];
+
+// ---------------------------------------------------------------------------
+// Global / national average CO₂ per capita per day (kg)
+// ---------------------------------------------------------------------------
+export const AVERAGES = {
+  global: 13.15, // ~4.8 tonnes/year ÷ 365
+  india: 5.48,   // ~2.0 tonnes/year ÷ 365
+  usa: 43.29,    // ~15.8 tonnes/year ÷ 365
+  eu: 17.81,     // ~6.5 tonnes/year ÷ 365
+};
